@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed Funding URL
+
 ## [0.1.0] - 2026-09-05
+
+### Added
 
 - Add an optional summary editor to choose summaries for every ordered property.
 - Add a Summary only Bases view that renders configured summaries as cards.
