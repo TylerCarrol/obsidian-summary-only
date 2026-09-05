@@ -5,6 +5,16 @@
 SummaryOnly adds a **Summary only** view to Obsidian Bases. The view hides the
 rows and instead, just displays the summaries as cards.
 
+## Examples
+
+##### Summary
+![SummaryOnly-Example](./images/example-summary-only.png)
+
+##### Table
+> Source data
+
+![SummaryOnly-Example](./images/example-table.png)
+
 ## Install for development
 
 1. Install dependencies:
