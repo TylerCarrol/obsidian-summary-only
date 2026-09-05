@@ -1,0 +1,15 @@
+filters:
+  and:
+    - file.hasTag("dataitem")
+views:
+  - type: table
+    name: Table
+    order:
+      - file.name
+      - number
+      - file.size
+    summaries:
+      number: Sum
+      file.size: Average
+    columnSize:
+      file.size: 97

@@ -22,7 +22,7 @@ data.json
 .DS_Store
 
 # Exclude Demo Vault Files
-{{RENAME}}-demo-vault/.obsidian/plugins/{{RENAME}}/main.js
-{{RENAME}}-demo-vault/.obsidian/plugins/{{RENAME}}/manifest.json
-{{RENAME}}-demo-vault/.obsidian/plugins/{{RENAME}}/styles.css
-{{RENAME}}-demo-vault/.obsidian/workspace.json
+summary-only-demo-vault/.obsidian/plugins/summary-only/main.js
+summary-only-demo-vault/.obsidian/plugins/summary-only/manifest.json
+summary-only-demo-vault/.obsidian/plugins/summary-only/styles.css
+summary-only-demo-vault/.obsidian/workspace.json
