@@ -1,6 +1,6 @@
 {
 	"name": "summary-only",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "SummaryOnly plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"type": "module",
