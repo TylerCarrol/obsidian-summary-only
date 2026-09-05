@@ -10,14 +10,16 @@ views:
   - type: summary-only
     name: Summary Only
     order:
-      - file.name
       - number
       - file.size
+      - file.name
     summaries:
       number: Sum
       file.size: Average
     columnSize:
       file.size: 97
+    cardWidth: 160
+    cardHeight: 80
   - type: table
     name: Table
     order:

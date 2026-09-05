@@ -8,6 +8,26 @@ export default class SummaryOnlyPlugin extends Plugin {
 			icon: 'lucide-chart-no-axes-combined',
 			factory: (controller, containerEl) =>
 				new SummaryOnlyView(controller, containerEl),
+			options: () => [
+				{
+					type: 'slider',
+					key: 'cardWidth',
+					displayName: 'Card width',
+					min: 100,
+					max: 480,
+					step: 10,
+					default: 288,
+				},
+				{
+					type: 'slider',
+					key: 'cardHeight',
+					displayName: 'Card height',
+					min: 80,
+					max: 320,
+					step: 8,
+					default: 80,
+				},
+			],
 		});
 	}
 }

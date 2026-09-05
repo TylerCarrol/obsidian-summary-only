@@ -26,6 +26,14 @@ export class SummaryOnlyView extends BasesView {
 
 	onDataUpdated(): void {
 		this.containerEl.empty();
+		this.containerEl.style.setProperty(
+			'--summary-only-card-width',
+			`${getDimension(this.config.get('cardWidth'), 288)}px`,
+		);
+		this.containerEl.style.setProperty(
+			'--summary-only-card-height',
+			`${getDimension(this.config.get('cardHeight'), 112)}px`,
+		);
 
 		const summaries = getSummaryConfiguration(this.config);
 		const cards = getSummaryCardDefinitions(this.config.getOrder(), summaries);
@@ -85,4 +93,10 @@ function getSummaryConfiguration(config: BasesViewConfig): SummaryConfiguration 
 	const serializedConfig = config as BasesViewConfig &
 		Partial<BasesConfigFileView>;
 	return serializedConfig.summaries ?? {};
+}
+
+function getDimension(value: unknown, fallback: number): number {
+	return typeof value === 'number' && Number.isFinite(value) && value > 0
+		? value
+		: fallback;
 }

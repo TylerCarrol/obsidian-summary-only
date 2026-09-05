@@ -18,3 +18,6 @@ The view filters the ten notes tagged `dataitem` and displays these cards:
 
 The **Table** view remains available for comparison. Edit a data note or the
 Base filters and the Summary Only cards update automatically.
+
+Open the Summary Only view settings to adjust **Card width** and **Card height**
+with sliders.
