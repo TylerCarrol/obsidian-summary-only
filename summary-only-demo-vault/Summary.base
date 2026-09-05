@@ -1,7 +1,23 @@
 filters:
   and:
     - file.hasTag("dataitem")
+properties:
+  note.number:
+    displayName: Number
+  file.size:
+    displayName: File Size
 views:
+  - type: summary-only
+    name: Summary Only
+    order:
+      - file.name
+      - number
+      - file.size
+    summaries:
+      number: Sum
+      file.size: Average
+    columnSize:
+      file.size: 97
   - type: table
     name: Table
     order:
