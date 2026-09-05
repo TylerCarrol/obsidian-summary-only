@@ -45,6 +45,11 @@
 	color: var(--text-muted);
 }
 
+.summary-only-card-summary {
+	max-width: 100%;
+	font-size: var(--font-ui-small);
+}
+
 .summary-only-card-value {
 	font-size: var(--font-ui-larger);
 	font-weight: var(--font-semibold);

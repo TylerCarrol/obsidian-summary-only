@@ -51,4 +51,5 @@ See `summary-only-demo-vault/README.md` for a guided walkthrough.
 
 Each card shows the property name, the summary name, and the calculated value.
 Use the view settings menu to adjust **Card width** and **Card height** with
-sliders.
+sliders. Enable **Show summary editor** to display every property in the view
+and choose a summary for each card.

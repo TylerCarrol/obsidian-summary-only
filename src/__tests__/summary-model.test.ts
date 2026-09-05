@@ -18,6 +18,20 @@ describe('getSummaryCardDefinitions', () => {
 		expect(getSummaryCardDefinitions(['number'], {})).toEqual([]);
 	});
 
+	it('returns every ordered property when the summary editor is shown', () => {
+		expect(
+			getSummaryCardDefinitions(
+				['file.name', 'file.size', 'number'],
+				{ number: 'Sum' },
+				true,
+			),
+		).toEqual([
+			{ propertyId: 'file.name', summaryKey: undefined },
+			{ propertyId: 'file.size', summaryKey: undefined },
+			{ propertyId: 'number', summaryKey: 'Sum' },
+		]);
+	});
+
 	it('ignores summaries for properties outside the view order', () => {
 		expect(
 			getSummaryCardDefinitions(['number'], {

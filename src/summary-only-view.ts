@@ -12,6 +12,23 @@ export const SUMMARY_ONLY_VIEW_TYPE = 'summary-only';
 
 type SummaryConfiguration = Record<string, string>;
 
+export const SUMMARY_OPTIONS: Record<string, string> = {
+	Sum: 'Sum',
+	Average: 'Average',
+	Min: 'Min',
+	Max: 'Max',
+	Range: 'Range',
+	Median: 'Median',
+	Stddev: 'Stddev',
+	Earliest: 'Earliest',
+	Latest: 'Latest',
+	Checked: 'Checked',
+	Unchecked: 'Unchecked',
+	Empty: 'Empty',
+	Filled: 'Filled',
+	Unique: 'Unique',
+};
+
 export class SummaryOnlyView extends BasesView {
 	readonly type = SUMMARY_ONLY_VIEW_TYPE;
 
@@ -36,7 +53,12 @@ export class SummaryOnlyView extends BasesView {
 		);
 
 		const summaries = getSummaryConfiguration(this.config);
-		const cards = getSummaryCardDefinitions(this.config.getOrder(), summaries);
+		const showSummaryEditor = this.config.get('showSummaryEditor') === true;
+		const cards = getSummaryCardDefinitions(
+			this.config.getOrder(),
+			summaries,
+			showSummaryEditor,
+		);
 
 		if (cards.length === 0) {
 			this.containerEl.createDiv({
@@ -52,6 +74,7 @@ export class SummaryOnlyView extends BasesView {
 				cardsEl,
 				card.propertyId as BasesPropertyId,
 				card.summaryKey,
+				showSummaryEditor,
 			);
 		}
 	}
@@ -59,7 +82,8 @@ export class SummaryOnlyView extends BasesView {
 	private renderCard(
 		parentEl: HTMLElement,
 		propertyId: BasesPropertyId,
-		summaryKey: string,
+		summaryKey: string | undefined,
+		showSummaryEditor: boolean,
 	): void {
 		const cardEl = parentEl.createDiv('summary-only-card');
 		cardEl.createDiv({
@@ -68,12 +92,40 @@ export class SummaryOnlyView extends BasesView {
 		});
 
 		const metricEl = cardEl.createDiv('summary-only-card-metric');
-		metricEl.createDiv({
-			cls: 'summary-only-card-label',
-			text: summaryKey,
-		});
+		if (showSummaryEditor) {
+			const selectEl = metricEl.createEl('select', {
+				cls: 'summary-only-card-summary',
+				attr: {
+					'aria-label': `Summary for ${this.config.getDisplayName(propertyId)}`,
+				},
+			});
+			selectEl.createEl('option', { text: 'No summary', value: '' });
+			for (const [value, label] of Object.entries(SUMMARY_OPTIONS)) {
+				selectEl.createEl('option', { text: label, value });
+			}
+			selectEl.value = summaryKey ?? '';
+			selectEl.addEventListener('change', () => {
+				const summaries = getSummaryConfiguration(this.config);
+				if (selectEl.value === '') {
+					delete summaries[propertyId];
+				} else {
+					summaries[propertyId] = selectEl.value;
+				}
+				this.config.set('summaries', summaries);
+				this.onDataUpdated();
+			});
+		} else {
+			metricEl.createDiv({
+				cls: 'summary-only-card-label',
+				text: summaryKey,
+			});
+		}
 
 		const valueEl = metricEl.createDiv('summary-only-card-value');
+		if (summaryKey === undefined) {
+			valueEl.setText('-');
+			return;
+		}
 		const value = this.data.getSummaryValue(
 			this.controller,
 			this.data.data,

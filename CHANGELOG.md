@@ -7,5 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Add an optional summary editor to choose summaries for every ordered property.
 - Add a Summary only Bases view that renders configured summaries as cards.
 - Add Card width and Card height sliders to Summary only view settings.

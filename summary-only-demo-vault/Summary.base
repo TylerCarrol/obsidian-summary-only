@@ -16,6 +16,7 @@ views:
     summaries:
       number: Sum
       file.size: Average
+    showSummaryEditor: false
     columnSize:
       file.size: 97
     cardWidth: 160
@@ -26,6 +27,7 @@ views:
       - file.name
       - number
       - file.size
+    sort: []
     summaries:
       number: Sum
       file.size: Average

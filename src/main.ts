@@ -1,5 +1,8 @@
 import { Plugin } from 'obsidian';
-import { SummaryOnlyView, SUMMARY_ONLY_VIEW_TYPE } from './summary-only-view';
+import {
+	SummaryOnlyView,
+	SUMMARY_ONLY_VIEW_TYPE,
+} from './summary-only-view';
 
 export default class SummaryOnlyPlugin extends Plugin {
 	onload() {
@@ -9,6 +12,12 @@ export default class SummaryOnlyPlugin extends Plugin {
 			factory: (controller, containerEl) =>
 				new SummaryOnlyView(controller, containerEl),
 			options: () => [
+				{
+					type: 'toggle',
+					key: 'showSummaryEditor',
+					displayName: 'Show summary editor',
+					default: false,
+				},
 				{
 					type: 'slider',
 					key: 'cardWidth',
