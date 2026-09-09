@@ -1,6 +1,11 @@
 # SummaryOnly Plugin for Obsidian
 
-[![GitHub Release](https://img.shields.io/github/v/release/TylerCarrol/obsidian-summary-only?logo=github&sort=semver)](https://github.com/TylerCarrol/obsidian-summary-only/releases/latest) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/TylerCarrol/obsidian-summary-only/blob/main/LICENSE) [![Lint](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/lint.yml/badge.svg)](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/lint.yml) [![Test](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/test.yml/badge.svg)](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/test.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/TylerCarrol/obsidian-summary-only?logo=github&sort=semver)](https://github.com/TylerCarrol/obsidian-summary-only/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/TylerCarrol/obsidian-summary-only/blob/main/LICENSE)
+[![Lint](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/lint.yml/badge.svg)](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/lint.yml)
+[![Test](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/test.yml/badge.svg)](https://github.com/TylerCarrol/obsidian-summary-only/actions/workflows/test.yml)
+[![Scc Count Badge](https://sloc.xyz/github/TylerCarrol/obsidian-summary-only?category=code)](https://github.com/TylerCarrol/obsidian-summary-only?category=code)
+[![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-yellow.svg)](https://buymeacoffee.com/tylercarrol)
 
 SummaryOnly adds a **Summary only** view to Obsidian Bases. The view hides the
 rows and instead, just displays the summaries as cards.
