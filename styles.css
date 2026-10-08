@@ -2,6 +2,17 @@
 	padding: var(--size-4-4);
 }
 
+.summary-only-group + .summary-only-group {
+	margin-top: var(--size-4-6);
+}
+
+.summary-only-group-title {
+	margin: 0 0 var(--size-4-3);
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+	overflow-wrap: anywhere;
+}
+
 .summary-only-cards {
 	display: grid;
 	grid-template-columns: repeat(

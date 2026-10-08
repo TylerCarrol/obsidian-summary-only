@@ -1,0 +1,33 @@
+filters:
+  and:
+    - file.hasTag("summarygroupitem")
+properties:
+  note.number:
+    displayName: Number
+  note.group:
+    displayName: Group
+views:
+  - type: summary-only
+    name: Grouped summaries
+    groupBy:
+      property: group
+      direction: ASC
+    order:
+      - number
+    summaries:
+      number: Sum
+    showAllSummary: true
+    showSummaryEditor: false
+    cardWidth: 160
+    cardHeight: 80
+  - type: table
+    name: Grouped table
+    groupBy:
+      property: group
+      direction: ASC
+    order:
+      - file.name
+      - group
+      - number
+    summaries:
+      number: Sum

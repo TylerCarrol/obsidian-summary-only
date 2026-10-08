@@ -68,3 +68,18 @@ Each card shows the property name, the summary name, and the calculated value.
 Use the view settings menu to adjust **Card width** and **Card height** with
 sliders. Enable **Show summary editor** to display every property in the view
 and choose a summary for each card.
+
+### Grouped summaries
+
+Select a property in the Base view's **Group by** setting. SummaryOnly shows
+a section for each group, with one card per summary property. Each card
+calculates its summary from that group's entries. Sections follow the Base
+group order. Entries without a group value appear under **No value**.
+
+The **All** section appears first by default. Its cards summarize all entries
+in the current Base result. Turn off **Show All summary** in the view settings
+to show only the group sections. This setting applies to each view separately.
+Without **Group by**, the view keeps its original layout.
+
+Summary choices apply to every group. A change in any card's summary editor
+updates that property in all sections.

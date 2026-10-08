@@ -1,12 +1,14 @@
 import {
 	BasesConfigFileView,
+	BasesEntry,
 	BasesPropertyId,
 	BasesView,
 	BasesViewConfig,
+	NullValue,
 	QueryController,
 	RenderContext,
 } from 'obsidian';
-import { getSummaryCardDefinitions } from './summary-model';
+import { getSummaryCardDefinitions, getSummaryScopes } from './summary-model';
 
 export const SUMMARY_ONLY_VIEW_TYPE = 'summary-only';
 
@@ -68,14 +70,50 @@ export class SummaryOnlyView extends BasesView {
 			return;
 		}
 
-		const cardsEl = this.containerEl.createDiv('summary-only-cards');
-		for (const card of cards) {
-			this.renderCard(
-				cardsEl,
-				card.propertyId as BasesPropertyId,
-				card.summaryKey,
-				showSummaryEditor,
-			);
+		const serializedConfig = this.config as BasesViewConfig &
+			Partial<BasesConfigFileView>;
+		const scopes = getSummaryScopes(
+			this.data.data,
+			this.data.groupedData,
+			serializedConfig.groupBy != null,
+			this.config.get('showAllSummary') !== false,
+		);
+		if (scopes.length === 0) {
+			this.containerEl.createDiv({
+				cls: 'summary-only-empty',
+				text: 'No results for this view.',
+			});
+			return;
+		}
+
+		for (const scope of scopes) {
+			let parentEl = this.containerEl;
+			if (scope.kind !== 'ungrouped') {
+				parentEl = this.containerEl.createEl('section', {
+					cls: 'summary-only-group',
+				});
+				const headingEl = parentEl.createEl('h3', {
+					cls: 'summary-only-group-title',
+				});
+				if (scope.kind === 'all') {
+					headingEl.setText('All');
+				} else if (scope.group.hasKey() && scope.group.key !== undefined) {
+					scope.group.key.renderTo(headingEl, new RenderContext());
+				} else {
+					headingEl.setText('No value');
+				}
+			}
+
+			const cardsEl = parentEl.createDiv('summary-only-cards');
+			for (const card of cards) {
+				this.renderCard(
+					cardsEl,
+					card.propertyId as BasesPropertyId,
+					card.summaryKey,
+					showSummaryEditor,
+					scope.entries,
+				);
+			}
 		}
 	}
 
@@ -84,6 +122,7 @@ export class SummaryOnlyView extends BasesView {
 		propertyId: BasesPropertyId,
 		summaryKey: string | undefined,
 		showSummaryEditor: boolean,
+		entries: BasesEntry[],
 	): void {
 		const cardEl = parentEl.createDiv('summary-only-card');
 		cardEl.createDiv({
@@ -128,15 +167,15 @@ export class SummaryOnlyView extends BasesView {
 		}
 		const value = this.data.getSummaryValue(
 			this.controller,
-			this.data.data,
+			entries,
 			propertyId,
 			summaryKey,
 		);
 
-		if (value.isTruthy()) {
-			value.renderTo(valueEl, new RenderContext());
-		} else {
+		if (value instanceof NullValue) {
 			valueEl.setText('-');
+		} else {
+			value.renderTo(valueEl, new RenderContext());
 		}
 	}
 }

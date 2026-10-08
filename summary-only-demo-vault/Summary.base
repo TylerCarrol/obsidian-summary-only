@@ -1,6 +1,9 @@
 filters:
   and:
     - file.hasTag("dataitem")
+formulas:
+  OddEven: if(formula.FileNumber % 2 == 0, "Even", "Odd")
+  FileNumber: number(file.name.replace("data-item-",""))
 properties:
   note.number:
     displayName: Number
@@ -21,8 +24,46 @@ views:
       file.size: 97
     cardWidth: 160
     cardHeight: 80
+  - type: summary-only
+    name: Summary Only (Grouped w/ All)
+    groupBy:
+      property: formula.OddEven
+      direction: ASC
+    order:
+      - number
+      - file.size
+      - file.name
+    summaries:
+      number: Sum
+      file.size: Average
+    showSummaryEditor: false
+    columnSize:
+      file.size: 97
+    cardWidth: 160
+    cardHeight: 80
+  - type: summary-only
+    name: Summary Only (Grouped - w/o All)
+    groupBy:
+      property: formula.OddEven
+      direction: ASC
+    order:
+      - number
+      - file.size
+      - file.name
+    summaries:
+      number: Sum
+      file.size: Average
+    showSummaryEditor: false
+    columnSize:
+      file.size: 97
+    cardWidth: 160
+    cardHeight: 80
+    showAllSummary: false
   - type: table
     name: Table
+    groupBy:
+      property: formula.OddEven
+      direction: ASC
     order:
       - file.name
       - number

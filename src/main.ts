@@ -14,6 +14,12 @@ export default class SummaryOnlyPlugin extends Plugin {
 			options: () => [
 				{
 					type: 'toggle',
+					key: 'showAllSummary',
+					displayName: 'Show All summary',
+					default: true,
+				},
+				{
+					type: 'toggle',
 					key: 'showSummaryEditor',
 					displayName: 'Show summary editor',
 					default: false,

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Show summary cards in separate sections for the active Base view's groups.
+- Add a per-view Show All summary toggle, on by default.
+- Add a grouped demo with Group A, Group B, and entries without a group value.
+
+### Fixed
+
+- Show zero summary values instead of a missing-value placeholder.
+
 ## [0.1.2] - 2026-10-01
 
 ## [0.1.1] - 2026-09-05
