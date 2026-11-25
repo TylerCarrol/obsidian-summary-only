@@ -46,5 +46,10 @@ sections. The **Grouped table** view shows the source entries.
 Without the All section, the three group sections remain visible. Summary
 choices apply to every section, not to an individual group.
 
+Select **Hide zero summaries** to see **Hide when** set to **Zero**. The
+No value group's zero card is hidden, while the other cards remain visible.
+Change the setting to **Not zero** to hide the other cards instead, or select
+the blank option to show every card. Empty group headings remain visible.
+
 The sample notes are in `GroupedData/`. They do not change the original
 `Summary.base` example.

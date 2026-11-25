@@ -7,7 +7,9 @@ import {
 	BasesQueryResult,
 	BasesViewConfig,
 	NullValue,
+	NumberValue,
 	QueryController,
+	StringValue,
 	Value,
 } from 'obsidian';
 import SummaryOnlyPlugin from '../main';
@@ -49,9 +51,11 @@ function setup(options: {
 	grouped?: boolean;
 	showAll?: boolean;
 	editor?: boolean;
+	hideWhen?: string;
 	groups?: BasesEntryGroup[];
 	summaries?: Record<string, string>;
 	order?: BasesPropertyId[];
+	summaryValues?: Record<string, Value>;
 } = {}) {
 	const groupA = group('Group A', [entry(10), entry(20)]);
 	const groupB = group('Group B', [entry(5), entry(15)]);
@@ -60,6 +64,7 @@ function setup(options: {
 	const settings: Record<string, unknown> = {
 		showAllSummary: options.showAll,
 		showSummaryEditor: options.editor,
+		hideWhen: options.hideWhen,
 	};
 	const config = {
 		name: 'Test view',
@@ -85,11 +90,14 @@ function setup(options: {
 		property: BasesPropertyId,
 		summary: string,
 	): Value => {
+		if (options.summaryValues?.[property] !== undefined) {
+			return options.summaryValues[property];
+		}
 		if (summary === 'Missing') {
 			return new NullValue();
 		}
 		const sum = items.reduce((total, item) => total + Number(item.getValue(property)?.toString()), 0);
-		return new TestValue(summary === 'Average' && items.length > 0 ? sum / items.length : sum);
+		return new NumberValue(summary === 'Average' && items.length > 0 ? sum / items.length : sum);
 	});
 	const data = {
 		data: entries,
@@ -218,6 +226,92 @@ describe('SummaryOnlyView groups', () => {
 		expect(values(parent)).toEqual(['-', '-', '-']);
 	});
 
+	it.each([
+		['', ['0', '-2', '3']],
+		['zero', ['-2', '3']],
+		['notZero', ['0']],
+	])('applies Hide when %s independently to each card', (hideWhen, expected) => {
+		const { parent, getSummaryValue } = setup({
+			grouped: false,
+			hideWhen,
+			order: ['note.zero', 'note.negative', 'note.positive'],
+			summaries: { 'note.zero': 'Sum', 'note.negative': 'Sum', 'note.positive': 'Sum' },
+			summaryValues: {
+				'note.zero': new NumberValue(0),
+				'note.negative': new NumberValue(-2),
+				'note.positive': new NumberValue(3),
+			},
+		});
+		expect(values(parent)).toEqual(expected);
+		expect(getSummaryValue).toHaveBeenCalledTimes(3);
+	});
+
+	it.each([
+		['zero', [['All', '5'], ['Zero', ''], ['Nonzero', '5']]],
+		['notZero', [['All', ''], ['Zero', '0'], ['Nonzero', '']]],
+	])('applies Hide when %s separately to All and each group', (hideWhen, expected) => {
+		const { parent } = setup({
+			hideWhen,
+			groups: [group('Zero', [entry(0)]), group('Nonzero', [entry(5)])],
+		});
+		expect(Array.from(parent.querySelectorAll('section'), (section) => [
+			section.querySelector('h3')?.textContent,
+			section.querySelector('.summary-only-card-value')?.textContent ?? '',
+		])).toEqual(expected);
+	});
+
+	it.each([
+		['', ['-', '', '0', ' ', 'false', '-']],
+		['zero', ['0', ' ', 'false']],
+		['notZero', ['-', '', '0', ' ', 'false', '-']],
+	])('applies Hide when %s to blank and non-numeric cards', (hideWhen, expected) => {
+		const { parent } = setup({
+			grouped: false,
+			editor: true,
+			hideWhen,
+			order: ['note.missing', 'note.blank', 'note.text', 'note.whitespace', 'note.false', 'note.unconfigured'],
+			summaries: {
+				'note.missing': 'Missing', 'note.blank': 'Sum', 'note.text': 'Sum',
+				'note.whitespace': 'Sum', 'note.false': 'Sum',
+			},
+			summaryValues: {
+				'note.blank': new StringValue(''),
+				'note.text': new StringValue('0'),
+				'note.whitespace': new StringValue(' '),
+				'note.false': new TestValue(false),
+			},
+		});
+		expect(values(parent)).toEqual(expected);
+		expect(parent.querySelectorAll('select')).toHaveLength(expected.length);
+	});
+
+	it('hides blank results separately in All and group sections', () => {
+		const { parent } = setup({ hideWhen: 'zero', summaries: { 'note.number': 'Missing' } });
+		expect(headings(parent)).toEqual(['All', 'Group A', 'Group B']);
+		expect(values(parent)).toEqual([]);
+	});
+
+	it('updates visibility when the setting or summary changes', () => {
+		const { parent, settings, view } = setup({
+			grouped: false,
+			editor: true,
+			groups: [group('A', [entry(0), entry(4)])],
+		});
+		settings.hideWhen = 'zero';
+		view.onDataUpdated();
+		expect(values(parent)).toEqual(['4']);
+		const select = parent.querySelector('select')!;
+		select.value = 'Average';
+		select.dispatchEvent(new Event('change'));
+		expect(values(parent)).toEqual(['2']);
+		settings.hideWhen = 'notZero';
+		view.onDataUpdated();
+		expect(values(parent)).toEqual([]);
+		settings.hideWhen = '';
+		view.onDataUpdated();
+		expect(values(parent)).toEqual(['2']);
+	});
+
 	it('persists editor changes and updates every section', () => {
 		const { parent, config } = setup({ editor: true });
 		const select = parent.querySelector('select')!;
@@ -283,6 +377,13 @@ describe('view registration', () => {
 			key: 'showAllSummary',
 			displayName: 'Show All summary',
 			default: true,
+		});
+		expect(registration.options?.({} as BasesViewConfig)).toContainEqual({
+			type: 'dropdown',
+			key: 'hideWhen',
+			displayName: 'Hide when',
+			default: '',
+			options: { '': '', zero: 'Zero', notZero: 'Not zero' },
 		});
 	});
 });

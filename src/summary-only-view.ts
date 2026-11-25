@@ -5,8 +5,11 @@ import {
 	BasesView,
 	BasesViewConfig,
 	NullValue,
+	NumberValue,
 	QueryController,
 	RenderContext,
+	StringValue,
+	Value,
 } from 'obsidian';
 import { getSummaryCardDefinitions, getSummaryScopes } from './summary-model';
 
@@ -124,6 +127,18 @@ export class SummaryOnlyView extends BasesView {
 		showSummaryEditor: boolean,
 		entries: BasesEntry[],
 	): void {
+		const value = summaryKey === undefined
+			? undefined
+			: this.data.getSummaryValue(this.controller, entries, propertyId, summaryKey);
+		const isZero = value instanceof NumberValue && Value.equals(value, new NumberValue(0));
+		const isBlank = value == null || value instanceof NullValue
+			|| (value instanceof StringValue && value.toString() === '');
+		const hideWhen = this.config.get('hideWhen');
+		if ((hideWhen === 'zero' && (isZero || isBlank))
+			|| (hideWhen === 'notZero' && value instanceof NumberValue && !isZero)) {
+			return;
+		}
+
 		const cardEl = parentEl.createDiv('summary-only-card');
 		cardEl.createDiv({
 			cls: 'summary-only-card-title',
@@ -161,16 +176,10 @@ export class SummaryOnlyView extends BasesView {
 		}
 
 		const valueEl = metricEl.createDiv('summary-only-card-value');
-		if (summaryKey === undefined) {
+		if (value == null) {
 			valueEl.setText('-');
 			return;
 		}
-		const value = this.data.getSummaryValue(
-			this.controller,
-			entries,
-			propertyId,
-			summaryKey,
-		);
 
 		if (value instanceof NullValue) {
 			valueEl.setText('-');

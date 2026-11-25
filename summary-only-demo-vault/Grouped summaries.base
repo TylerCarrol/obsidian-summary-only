@@ -20,6 +20,18 @@ views:
     showSummaryEditor: false
     cardWidth: 160
     cardHeight: 80
+  - type: summary-only
+    name: Hide zero summaries
+    groupBy:
+      property: group
+      direction: ASC
+    order:
+      - number
+    summaries:
+      number: Sum
+    hideWhen: zero
+    cardWidth: 160
+    cardHeight: 80
   - type: table
     name: Grouped table
     groupBy:

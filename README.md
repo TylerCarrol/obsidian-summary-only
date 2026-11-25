@@ -69,6 +69,13 @@ Use the view settings menu to adjust **Card width** and **Card height** with
 sliders. Enable **Show summary editor** to display every property in the view
 and choose a summary for each card.
 
+Set **Hide when** to **Zero** to hide cards with a numeric zero, a missing
+summary value, or an empty string. This also hides cards without a configured
+summary in the summary editor; select the blank option to configure them.
+**Not zero** hides cards with a nonzero numeric summary. Other non-numeric
+values remain visible. The blank option keeps all cards visible. This setting
+applies to each view separately and checks each card independently.
+
 ### Grouped summaries
 
 Select a property in the Base view's **Group by** setting. SummaryOnly shows
@@ -83,3 +90,5 @@ Without **Group by**, the view keeps its original layout.
 
 Summary choices apply to every group. A change in any card's summary editor
 updates that property in all sections.
+**Hide when** is evaluated separately for each group's card and for the All
+card. Group headings remain visible even when all their cards are hidden.

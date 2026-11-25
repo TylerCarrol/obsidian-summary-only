@@ -13,6 +13,13 @@ export default class SummaryOnlyPlugin extends Plugin {
 				new SummaryOnlyView(controller, containerEl),
 			options: () => [
 				{
+					type: 'dropdown',
+					key: 'hideWhen',
+					displayName: 'Hide when',
+					default: '',
+					options: { '': '', zero: 'Zero', notZero: 'Not zero' },
+				},
+				{
 					type: 'toggle',
 					key: 'showAllSummary',
 					displayName: 'Show All summary',

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add a per-view Hide when setting to hide individual cards with zero or blank summaries, or nonzero numeric summaries.
+
 ## [0.2.0] - 2026-10-08
 
 ### Added
